@@ -2,7 +2,8 @@
     "name": "@thi.ng/checks",
     "version": "1.5.5",
     "description": "Single-function sub-modules for type, feature & value checks",
-    "main": "./index.js",
+    "main": "./lib/index.js",
+    "module": "./index.js",
     "typings": "./index.d.ts",
     "repository": {
         "type": "git",
@@ -12,8 +13,11 @@
     "author": "Karsten Schmidt <k+npm@thi.ng>",
     "license": "Apache-2.0",
     "scripts": {
-        "build": "yarn clean && tsc --declaration",
-        "clean": "rm -rf *.js *.d.ts .nyc_output build coverage doc",
+        "build": "yarn clean && yarn build:es6 && yarn build:cjs && yarn build:umd",
+        "build:cjs": "tsc --declaration --outDir lib --module commonjs",
+        "build:es6": "tsc --declaration",
+        "build:umd": "rollup index.js -f umd -n thi.ng.checks -o dist/checks.js && babili -o dist/checks.min.js dist/checks.js",
+        "clean": "rm -rf *.js *.d.ts .nyc_output build coverage doc es6 lib",
         "cover": "yarn test && nyc report --reporter=lcov",
         "doc": "node_modules/.bin/typedoc --mode modules --out doc src",
         "pub": "yarn build && yarn publish --access public",
@@ -22,6 +26,7 @@
     "devDependencies": {
         "@types/mocha": "^5.2.0",
         "@types/node": "^10.0.6",
+        "babili": "^0.1.4",
         "mocha": "^5.1.1",
         "nyc": "^11.7.1",
         "typedoc": "^0.11.1",
