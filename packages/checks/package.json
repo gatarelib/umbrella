@@ -14,9 +14,9 @@
     "license": "Apache-2.0",
     "scripts": {
         "build": "yarn clean && yarn build:es6 && yarn build:cjs && yarn build:umd",
-        "build:cjs": "tsc --declaration --outDir lib --module commonjs",
+        "build:cjs": "tsc --declaration --outDir lib --module umd",
         "build:es6": "tsc --declaration",
-        "build:umd": "rollup index.js -f umd -n thi.ng.checks -o dist/checks.js && babili -o dist/checks.min.js dist/checks.js",
+        "build:umd": "rollup index.js -f umd -n thi.ng.checks -o dist/checks.js && babel-minify -o dist/checks.min.js dist/checks.js",
         "clean": "rm -rf *.js *.d.ts .nyc_output build coverage doc es6 lib",
         "cover": "yarn test && nyc report --reporter=lcov",
         "doc": "node_modules/.bin/typedoc --mode modules --out doc src",
